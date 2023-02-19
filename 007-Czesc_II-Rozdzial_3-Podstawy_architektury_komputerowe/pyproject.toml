@@ -8,8 +8,14 @@ packages = [{include = "007_czesc_ii_rozdzial_3_podstawy_architektury_komputerow
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pre-commit = "^3.0.4"
+black = "^23.1.0"
+isort = "^5.12.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88

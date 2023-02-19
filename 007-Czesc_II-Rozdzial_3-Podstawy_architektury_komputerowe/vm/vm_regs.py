@@ -3,5 +3,5 @@
 
 
 class VMGeneralPurposeRegister(object):
-  def __init__(self):
-    self.v = 0
+    def __init__(self):
+        self.v = 0
