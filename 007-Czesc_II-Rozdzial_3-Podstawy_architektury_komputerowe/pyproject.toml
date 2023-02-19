@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "007-czesc-ii-rozdzial-3-podstawy-architektury-komputerowe"
+version = "0.1.0"
+description = ""
+authors = ["Minister944 <kacper.machel.km@gmail.com>"]
+readme = "README.md"
+packages = [{include = "007_czesc_ii_rozdzial_3_podstawy_architektury_komputerowe"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
