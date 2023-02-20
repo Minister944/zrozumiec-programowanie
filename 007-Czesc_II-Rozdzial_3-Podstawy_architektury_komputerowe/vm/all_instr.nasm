@@ -1,4 +1,4 @@
-%include "vm.inc"
+%include "vm/vm.inc"
 
   ; First group.
   vmov r0, r1

@@ -1,4 +1,4 @@
-%include "vm.inc"
+%include "vm/vm.inc"
 
 ; Set up interrupt.
   vset r0, int_9

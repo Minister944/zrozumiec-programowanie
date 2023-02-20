@@ -1,16 +1,74 @@
-#!/usr/bin/python
-# watch pep8 --show-pep8 --ignore=E111,E114,E241,W391 ./vm.py
 import codecs
 import collections
 import os
 import sys
 import threading
 
+from termcolor import colored
 from vm_dev_con import VMDeviceConsole
 from vm_dev_timer import VMDeviceTimer
 from vm_instr import VM_OPCODES
 from vm_memory import VMMemory
 from vm_regs import VMGeneralPurposeRegister
+
+
+def debug_print(r, name, argument_bytes, register):
+    print(
+        f"{r[15].v:0>4x}: {name.ljust(20)}{(argument_bytes).hex().ljust(10)}{register}",
+        end="",
+    )
+
+
+def debug_colored(
+    opcode_name, r: VMGeneralPurposeRegister, argument_bytes: bytearray | None
+):
+    if opcode_name in [
+        "VJZ",
+        "VJE",
+        "VJNZ",
+        "VJNE",
+        "VJC",
+        "VJB",
+        "VJNC",
+        "VJAE",
+        "VJBE",
+        "VJA",
+    ]:
+        opcode_name = colored(opcode_name, color="white", on_color="on_red")
+    elif opcode_name in "VCMP":
+        opcode_name = colored(opcode_name, color="black", on_color="on_red")
+    elif opcode_name in ["VADD", "VSUB", "VMUL", "VDIV", "VMOD"]:
+        opcode_name = colored(opcode_name, color="white", on_color="on_cyan")
+    elif opcode_name in ["VJMP", "VJMPR", "VCALL", "VCLLR", "VRET"]:
+        opcode_name = colored(opcode_name, color="white", on_color="on_magenta")
+    elif opcode_name in [
+        "VOR",
+        "VAND",
+        "VXOR",
+        "VNOT",
+        "VSHL",
+        "VSHR",
+    ]:
+        opcode_name = colored(opcode_name, color="white", on_color="on_green")
+    elif opcode_name in ["VMOV", "VSET", "VLD", "VST", "VLDB", "VSTB"]:
+        opcode_name = colored(opcode_name, color="white", on_color="on_yellow")
+    else:
+        opcode_name = colored(opcode_name, color="white", on_color="on_black")
+
+    r_help = ""
+    for i in range(16):
+        if i == 14:
+            r_help += f"sp={r[i].v:x}"
+            continue
+        if i == 15:
+            continue
+
+        if len(f"{r[i].v:x}") + len(str(r[i].v)) <= 9 and r[i].v != 0:
+            r_help += f" r{i}={r[i].v:x}({r[i].v})".ljust(14)
+        else:
+            r_help += f" r{i}={r[i].v:x}".ljust(14)
+    debug_print(r, opcode_name, argument_bytes, r_help)
+    print()
 
 
 class VMInstance(object):
@@ -165,9 +223,85 @@ class VMInstance(object):
 
         handler = self.opcodes[opcode][self.INSTR_HANDLER]
         # Uncomment this line to get a dump of executed instructions.
-        # print("%.4x: %s\t%s" % (self.pc.v,
-        #                        handler.__name__,
-        #                        codecs.encode(argument_bytes, "hex")))
+        debug_colored(handler.__name__, self.r, argument_bytes)
+        # if handler.__name__ in [
+        #     "VJZ",
+        #     "VJE",
+        #     "VJNZ",
+        #     "VJNE",
+        #     "VJC",
+        #     "VJB",
+        #     "VJNC",
+        #     "VJAE",
+        #     "VJBE",
+        #     "VJA",
+        # ]:
+        #     name = colored(handler.__name__, on_color="on_red")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # elif handler.__name__ in "VCMP":
+        #     name = colored(handler.__name__, color="black", on_color="on_red")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+
+        # elif handler.__name__ in ["VADD", "VSUB", "VMUL", "VDIV", "VMOD"]:
+        #     name = colored(handler.__name__, on_color="on_cyan")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # elif handler.__name__ in ["VJMP", "VJMPR", "VCALL", "VCLLR", "VRET"]:
+        #     name = colored(handler.__name__, on_color="on_magenta")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # elif handler.__name__ in [
+        #     "VOR",
+        #     "VAND",
+        #     "VXOR",
+        #     "VNOT",
+        #     "VSHL",
+        #     "VSHR",
+        # ]:
+        #     name = colored(handler.__name__, on_color="on_green")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # elif handler.__name__ in ["VMOV", "VSET", "VLD", "VST", "VLDB", "VSTB"]:
+        #     name = colored(handler.__name__, color="white", on_color="on_yellow")
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {name: ^13}  {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # else:
+        #     print(
+        #         f"{self.pc.v.to_bytes(2, byteorder='big').hex()}: {handler.__name__: <5} {argument_bytes.hex(): <11}",
+        #         end="",
+        #     )
+        # for i in range(16):
+        #     # if i == 4:
+        #     #     r = f"sp={self.r[i].v.to_bytes(2, byteorder='big').hex()}"
+        #     #     print(f"{r: ^10}", end="")
+        #     #     continue
+        #     if i == 14:
+        #         r = f"sp={self.r[i].v}"
+        #         print(f"{r: ^7}", end="")
+        #         continue
+        #     if i == 15:
+        #         continue
+        #     r = f"r{i}={self.r[i].v}"
+        #     print(f"{r: <10}", end="")
+        # print()
+
+        with open("ramcopy", "wb") as f:
+            # Read at most the size of RAM.
+            f.write(self.mem._mem)
         self.pc.v += 1 + length
         handler(self, argument_bytes)
 

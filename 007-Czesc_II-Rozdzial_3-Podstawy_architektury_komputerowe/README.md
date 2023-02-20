@@ -1,5 +1,11 @@
 Mini-emulator maszyny wirtualnej opisanej w książce "Zrozumieć Programowanie".
 
+Wersja 1.2
+
+- Better debug console
+  - The content in ( ) is a number, displayed only if it is not 0 and <= 9
+    ![debug console](img/debug_console.png)
+
 Wersja 1.1
 
 - Wsparcie dla Python3
