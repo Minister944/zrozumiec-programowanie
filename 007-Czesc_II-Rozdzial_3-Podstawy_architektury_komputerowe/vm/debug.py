@@ -1,5 +1,5 @@
-from termcolor import colored
 from regs import VMGeneralPurposeRegister
+from termcolor import colored
 
 
 class Debug:
@@ -50,14 +50,17 @@ class Debug:
         r_help = ""
         for i in range(16):
             if i == 14:
-                r_help += f"sp={r[i].v:x}"
+                if len(f"{r[i].v:x}") + len(str(r[i].v)) <= 9 and r[i].v != 0:
+                    r_help += f"sp={r[i].v:x}({r[i].v})".ljust(14)
+                else:
+                    r_help += f"sp={r[i].v:x}".ljust(14)
                 continue
             if i == 15:
                 continue
 
             if len(f"{r[i].v:x}") + len(str(r[i].v)) <= 9 and r[i].v != 0:
-                r_help += f" r{i}={r[i].v:x}({r[i].v})".ljust(14)
+                r_help += f"r{i}={r[i].v:x}({r[i].v})".ljust(14)
             else:
-                r_help += f" r{i}={r[i].v:x}".ljust(14)
+                r_help += f"r{i}={r[i].v:x}".ljust(14)
         Debug._debug_print(r, opcode_name, argument_bytes, r_help)
         print()
