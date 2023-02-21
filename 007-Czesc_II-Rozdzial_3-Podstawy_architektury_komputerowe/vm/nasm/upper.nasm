@@ -1,4 +1,4 @@
-%include "vm.inc"
+%include "nasm.inc"
 
   ; Read one char from stdin
   vinb 0x20, r0
@@ -22,4 +22,3 @@ not_lower:
 
   ; Done.
   voff
-

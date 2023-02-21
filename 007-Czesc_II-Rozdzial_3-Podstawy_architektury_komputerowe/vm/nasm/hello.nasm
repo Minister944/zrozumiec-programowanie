@@ -1,4 +1,4 @@
-%include "vm.inc"
+%include "nasm.inc"
 
 ; Wypisz dane, znak po znaku.
 vset r4, data
@@ -26,4 +26,3 @@ voff
 
 data:
   db "Hello World", 0xa, 0
-

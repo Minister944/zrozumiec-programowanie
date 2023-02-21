@@ -1,4 +1,4 @@
-%include "vm/vm.inc"
+%include "nasm/vm.inc"
 
   ; First group.
   vmov r0, r1
@@ -65,13 +65,12 @@ n13:
   vcallr r0
 n14:
   vpop r0
-  
+
   ; Last group.
   vcrl 0x100, r0
   vcrs 0x100, r0
   voutb 0x71, r0
-  vinb 0x71, r0  
+  vinb 0x71, r0
 
   ; Done.
   voff
-

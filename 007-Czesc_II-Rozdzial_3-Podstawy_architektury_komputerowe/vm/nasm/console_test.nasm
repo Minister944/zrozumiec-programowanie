@@ -1,4 +1,4 @@
-%include "vm/vm.inc"
+%include "nasm/vm.inc"
 
 ; Set up interrupt.
   vset r0, int_9
@@ -40,4 +40,3 @@ end_of_data:
 
   vcrl 0x110, r0
   viret
-

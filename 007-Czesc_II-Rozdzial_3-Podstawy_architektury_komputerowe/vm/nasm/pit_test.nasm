@@ -1,4 +1,4 @@
-%include "vm.inc"
+%include "nasm.inc"
 
 ; Reset alarm.
   vset r0, 0
@@ -38,4 +38,3 @@ int_8:
   voutb 0x20, r1
   voutb 0x20, r2
   voff
-

@@ -1,4 +1,4 @@
-%include "vm/vm.inc"
+%include "nasm/vm.inc"
 
 ; Wypisz dane, znak po znaku.
 vset r1, 0
@@ -8,5 +8,3 @@ start_loop:
   vjmp start_loop
 
 voff
-
-
