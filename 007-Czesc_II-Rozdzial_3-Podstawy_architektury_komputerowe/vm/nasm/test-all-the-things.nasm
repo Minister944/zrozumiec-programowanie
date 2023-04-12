@@ -1,0 +1,1 @@
+%include "nasm/vm.inc"

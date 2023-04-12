@@ -1,4 +1,4 @@
-%include "nasm.inc"
+%include "nasm/vm.inc"
 
   ; Read one char from stdin
   vinb 0x20, r0

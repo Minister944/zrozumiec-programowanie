@@ -63,7 +63,4 @@ print_numbers:
 	vjne print_numbers
 	voutb 0x20, r0
 
-
-
-
 voff

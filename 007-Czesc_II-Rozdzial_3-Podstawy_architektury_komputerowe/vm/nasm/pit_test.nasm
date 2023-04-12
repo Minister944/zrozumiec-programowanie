@@ -1,4 +1,4 @@
-%include "nasm.inc"
+%include "nasm/vm.inc"
 
 ; Reset alarm.
   vset r0, 0

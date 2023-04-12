@@ -1,4 +1,4 @@
-%include "nasm.inc"
+%include "nasm/vm.inc"
 
 ; Wypisz dane, znak po znaku.
 vset r4, data
